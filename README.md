@@ -1,0 +1,4 @@
+CoolSmallCodeSmell
+==================
+
+Random language source.
