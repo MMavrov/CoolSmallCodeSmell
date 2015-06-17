@@ -1,7 +1,9 @@
 template <class T> class Stack;
+
 template <class T>
-class Item {
-	friend class Stack <T>;
+class Item 
+{
+	friend class Stack <T>; // By declaring Stack<T> as friend we grant him access to the private and protected members of Item. If we use struct instead, we can skip the friend declaration!
 private:
 	Item(const T& x = 0)
 	{
@@ -19,7 +21,7 @@ public:
 	Stack();
 	~Stack();
 	Stack(const Stack &);
-	Stack& operator= (const Stack &);
+	Stack& operator=(const Stack &);
 	void push(const T&);
 	bool pop(T&);
 	bool top(T&) const;
@@ -29,28 +31,33 @@ private:
 	void delStack();
 	void copyStack(const Stack &);
 };
+
 template <class T>
 Stack<T>::Stack(const T& x)
 {
 	start = new Item<T>(x);
 }
+
 template <class T>
 Stack<T>::Stack()
 {
 	start = NULL;
 }
+
 template <class T>
 Stack<T>::~Stack()
 {
 	delStack();
 }
+
 template <class T>
 Stack<T>::Stack(const Stack<T> &r)
 {
 	copyStack(r);
 }
+
 template <class T>
-Stack<T>& operator= (const Stack<T> &r)
+Stack<T>& Stack<T>::operator=(const Stack<T> &r)
 {
 	if (this != &r)
 	{
@@ -59,6 +66,7 @@ Stack<T>& operator= (const Stack<T> &r)
 	}
 	return *this;
 }
+
 template <class T>
 void Stack<T>::delStack()
 {
@@ -70,6 +78,7 @@ void Stack<T>::delStack()
 		delete p;
 	}
 }
+
 template <class T>
 void Stack<T>::copyStack(const Stack<T> &r)
 {
@@ -88,6 +97,7 @@ void Stack<T>::copyStack(const Stack<T> &r)
 		}
 	}
 }
+
 template <class T>
 void Stack<T>::push(const T& x)
 {
@@ -95,6 +105,7 @@ void Stack<T>::push(const T& x)
 	p->link = start;
 	start = p;
 }
+
 template <class T>
 bool Stack<T>::pop(T& x)
 {
@@ -105,6 +116,7 @@ bool Stack<T>::pop(T& x)
 	delete p;
 	return true;
 }
+
 template <class T>
 bool Stack<T>::top(T& x) const
 {
@@ -112,6 +124,7 @@ bool Stack<T>::top(T& x) const
 	x = start->inf;
 	return true;
 }
+
 template <class T>
 bool Stack<T>::empty() const
 {
