@@ -19,18 +19,20 @@ public:
 	void IterStart(Item<T>* = NULL);
 	Item<T>* Iter();
 	bool IterView(T&) const;
+
 	void InsertToEnd(const T&);
 	void InsertToBegin(const T&);
 	void InsertAfter(Item<T>*, const T&);
 	void InsertBefore(Item<T>*, const T&);
-	void DeleteAfter(Item<T>*, const T&);
-	void DeleteBefore(Item<T>*, const T&);
-	void DeleteElement(Item<T>*, const T&);
+	void DeleteAfter(Item<T>*, T&);
+	void DeleteBefore(Item<T>*, T&);
+	void DeleteElement(Item<T>*, T&);
+
+	void Concat(const LList<T>&);
+	void Reverse();
+	void Print() const;
 
 	int length() const;
-	void print() const;
-	void concat(const LList<T>&);
-	void reverse();
 	bool empty() const;
 
 private:
@@ -40,7 +42,7 @@ private:
 };
 
 template <class T>
-LList<T>::LList(const T& x)
+LList<T>::LList(const T &x)
 {
 	start = new Item<T>;
 	start->inf = x;
@@ -78,7 +80,7 @@ LList<T>& LList<T>::operator=(const LList<T> &r)
 }
 
 template <class T>
-void LList<T>::delLList()
+void LList<T>::deleteLList()
 {
 	Item<T> *p;
 	while (start)
@@ -104,6 +106,42 @@ void LList<T>::copyLList(const LList<T> &r)
 }
 
 template <class T>
+void LList<T>::IterStart(Item<T> *p)
+{
+	if (p) current = p;
+	else current = start;
+}
+
+template <class T>
+Item<T>* LList<T>::Iter()
+{
+	Item<T> *x = current
+	if (current) current = current->link;
+
+	return x;
+}
+
+template <class T>
+bool LList<T>::IterView(T &x) const
+{
+	if (!current) return false;
+	else x = current->inf;
+
+	return true;
+}
+
+template <class T>
+void LList<T>::InsertToBegin(const T &x)
+{
+	Item<T> *p = new Item<T>;
+	p->inf = x;
+	p->link = start;
+	start = p;
+
+	if (!end) end = p;
+}
+
+template <class T>
 void LList<T>::InsertToEnd(const T &x)
 {
 	Item<T> *p = new Item<T>;
@@ -117,4 +155,143 @@ void LList<T>::InsertToEnd(const T &x)
 		end->link = p;
 		end = p;
 	}
+}
+
+template <class T>
+void LList<T>::InsertAfter(Item<T> *p, const T &x)
+{
+	Item<T> *q = new Item<T>;
+
+	q->inf = x;
+	q->link = p->link;
+
+	p->link = q;
+	if (p == end) end = q;
+}
+
+template <class T>
+void LList<T>::InsertBefore(Item<T> *p, const T &x)
+{
+	Item<T> *q = new Item<T>;
+
+	q->inf = x;
+	q->link = p;
+
+	if (p == start) start = q;
+}
+
+template <class T>
+void LList<T>::DeleteAfter(Item<T> *p, T &x)
+{
+	Item<T> *q = p->link;
+
+	x = q->inf;
+	p->link = q->link;
+
+	if (q == end) end = p;
+	delete q;
+}
+
+template <class T>
+void LList<T>::DeleteBefore(Item<T> *p, T &x)
+{
+	Item<T> *q = start;
+
+	if (q->link == p)
+	{
+		x = q->inf;
+		start = start->link;
+		delete q;
+	}
+	else
+	{
+		while (q->link != p) q = q->link;
+		DeleteElement(q, x);
+	}
+}
+
+template <class T>
+void LList<T>::DeleteElement(Item<T> *p, T &x)
+{
+	if (p == start)
+	{
+		x = p->inf;
+		if (start == end) start = end = NULL;
+		else start = start->link;
+		delete p;
+	}
+	else if (p == end)
+	{
+		Item<T> * q = start;
+		while (q->link != end) q = q->link;
+		q->link = NULL;
+		delete end;
+		end = q;
+	}
+	else DeleteBefore(p->link, x);
+}
+
+template <class T>
+void LList<T>::Print() const
+{
+	Item<T> *p = start;
+
+	while (p)
+	{
+		cout << p->inf << ", ";
+		p = p->link;
+	}
+	cout << endl;
+}
+
+template <class T>
+void LList<T>::Concat(const LList<T> &r)
+{
+	Item<T> *p = r.start;
+
+	while (p)
+	{
+		InsertToEnd(p->inf);
+		p = p->link;
+	}
+}
+
+template <class T>
+void LList<T>::Reverse()
+{
+	Item<T> *p, *q, *temp;
+
+	if (start == end) return;
+
+	p = start;
+	q = NULL;
+	start = end;
+	end = p;
+
+	while (p)
+	{
+		temp = p->link;
+		p->link = q;
+		q = p;
+		p = temp;
+	}
+}
+
+template <class T>
+bool LList<T>::empty() const
+{
+	return start == NULL;
+}
+
+template <class T>
+int LList<T>::length() const
+{
+	Item<T> *p = start;
+	int n = 0;
+	while (p)
+	{
+		n++;
+		p = p->link;
+	}
+	return n;
 }
