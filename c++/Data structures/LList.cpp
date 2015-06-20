@@ -259,21 +259,22 @@ void LList<T>::Concat(const LList<T> &r)
 template <class T>
 void LList<T>::Reverse()
 {
-	Item<T> *p, *q, *temp;
+	Item<T> *currentItem, *currentItemLink, *temp;
 
 	if (start == end) return;
 
-	p = start;
-	q = NULL;
+	currentItem = start;
+	currentItemLink = NULL;
 	start = end;
-	end = p;
+	end = currentItem;
 
 	while (p)
 	{
-		temp = p->link;
-		p->link = q;
-		q = p;
-		p = temp;
+		temp = currentItem->link;
+
+		currentItem->link = currentItemLink;
+		currentItemLink = currentItem;
+		currentItem = temp;
 	}
 }
 
