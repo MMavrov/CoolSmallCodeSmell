@@ -1,5 +1,3 @@
-template <class T> class LList;
-
 template <class T>
 struct Item 
 {
