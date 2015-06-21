@@ -15,9 +15,6 @@ public:
 	Tree(const Tree&);
 	Tree<T>& operator=(const Tree<T>&);
 
-	bool RootTree(T&) const;
-	bool LeftTree(Tree<T>&) const;
-	bool RightTree(Tree<T>&) const;
 	void Create();
 	void Create3(const T&, const Tree<T>&, const Tree<T>&);
 	void Preorder();
@@ -25,6 +22,9 @@ public:
 	void Postorder();
 
 	bool empty() const;
+	bool rootTree(T&) const;
+	bool leftTree(Tree<T>&) const;
+	bool rightTree(Tree<T>&) const;
 
 private:
 	Node<T> *root;
@@ -108,7 +108,7 @@ bool Tree<T>::empty() const
 }
 
 template <class T>
-bool Tree<T>::RootTree(T &x) const
+bool Tree<T>::rootTree(T &x) const
 {
 	if (!root) return false;
 	x = root->inf;
@@ -116,7 +116,7 @@ bool Tree<T>::RootTree(T &x) const
 }
 
 template<class T>
-bool Tree<T>::LeftTree(Tree<T> &t) const
+bool Tree<T>::leftTree(Tree<T> &t) const
 {
 	if (!root) return false;
 	deleteTree(t.root);
@@ -125,7 +125,7 @@ bool Tree<T>::LeftTree(Tree<T> &t) const
 }
 
 template <class T>
-bool Tree<T>::RightTree(Tree<T> &t) const
+bool Tree<T>::rightTree(Tree<T> &t) const
 {
 	if (!root) return false;
 	deleteTree(t.root);
